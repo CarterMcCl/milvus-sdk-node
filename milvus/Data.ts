@@ -288,7 +288,7 @@ export class Data extends Client {
    *  });
    * ```
    */
-  async search(data: SearchReq): Promise<SearchResults> {
+  async search(data: SearchReq, vectorType: DataType, dim: Integer): Promise<SearchResults> {
     const root = await protobuf.load(protoPath);
     this.checkCollectionName(data);
     if (
@@ -303,20 +303,20 @@ export class Data extends Client {
     if (!this.vectorTypes.includes(data.vector_type))
       throw new Error(ERROR_REASONS.SEARCH_MISS_VECTOR_TYPE);
 
-    const collectionInfo = await this.collectionManager.describeCollection({
-      collection_name: data.collection_name,
-    });
+    // const collectionInfo = await this.collectionManager.describeCollection({
+    //   collection_name: data.collection_name,
+    // });
 
     // anns_field is the vector field column user want to compare.
-    const targetField = collectionInfo.schema.fields.find(
-      (v) => v.name === data.search_params.anns_field
-    );
-    if (!targetField) {
-      throw new Error(ERROR_REASONS.SEARCH_NOT_FIND_VECTOR_FIELD);
-    }
+    // const targetField = collectionInfo.schema.fields.find(
+    //   (v) => v.name === data.search_params.anns_field
+    // );
+    // if (!targetField) {
+    //   throw new Error(ERROR_REASONS.SEARCH_NOT_FIND_VECTOR_FIELD);
+    // }
 
-    const dim = findKeyValue(targetField.type_params, "dim");
-    const vectorType = DataTypeMap[targetField.data_type.toLowerCase()];
+    // const dim = findKeyValue(targetField.type_params, "dim");
+    // const vectorType = DataTypeMap[targetField.data_type.toLowerCase()];
     const dimension =
       vectorType === DataType.BinaryVector ? Number(dim) / 8 : Number(dim);
 
