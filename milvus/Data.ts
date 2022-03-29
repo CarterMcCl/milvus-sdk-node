@@ -288,7 +288,7 @@ export class Data extends Client {
    *  });
    * ```
    */
-  async search(data: SearchReq, vectorType: DataType, dim: Integer): Promise<SearchResults> {
+  async search(data: SearchReq, vectorType: any, dim: number): Promise<SearchResults> {
     const root = await protobuf.load(protoPath);
     this.checkCollectionName(data);
     if (
